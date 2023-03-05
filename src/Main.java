@@ -1,7 +1,5 @@
 import javafx.util.Pair;
-
 import javax.swing.*;
-import java.awt.*;
 import java.util.HashMap;
 
 class ChallengeConversor {
@@ -13,19 +11,28 @@ class ChallengeConversor {
             throw new RuntimeException(e);
         }
         Object[] units = new Object[]{"Moneda", "Velocidad"}; //creo un objeto con opciones
-        Object option = JOptionPane.showInputDialog(null, "Elija la unidad a convertir", "Conversor de unidades",
-                JOptionPane.QUESTION_MESSAGE, null, units, null); //armo la ventana con esas
-        // opciones
-        switch (option.toString()) { //si matchea la string con alguna funcion la ejecuta
-            case "Moneda":
-                convertCurrency(); //si matchea Moneda va a la funcion de convertir
-                break;
-            case "Velocidad":
-                convertSpeed();
-                break;
-            default:
-                break;
+
+       boolean finished = false;
+       //evaluo si yes fue apretado, si lo fue continuo.
+        while (!finished) {
+            Object option = JOptionPane.showInputDialog(null, "Elija la unidad a convertir", "Conversor de unidades",
+                    JOptionPane.QUESTION_MESSAGE, null, units, null); //armo la ventana con esas
+            // opciones
+            switch (option.toString()) { //si matchea la string con alguna funcion la ejecuta
+                case "Moneda":
+                    convertCurrency(); //si matchea Moneda va a la funcion de convertir
+                    break;
+                case "Velocidad":
+                    convertSpeed();
+                    break;
+                default:
+                    break;
+            }
+            //cuando no se apreta yes, guarda un falso, si se apreta guarda verdadero.
+            finished = JOptionPane.showConfirmDialog(null, "¿Desea continuar?", "Conversor de unidades", JOptionPane.YES_NO_CANCEL_OPTION) != JOptionPane.YES_OPTION;
+
         }
+        JOptionPane.showMessageDialog(null, "Programa finalizado");
     }
 
     //funcion que convierte las unidades de velocidad, debo agregar panel tambien para la seleccion
@@ -78,9 +85,8 @@ class ChallengeConversor {
         convertionValue.put(new Pair<>(Currency.USD, Currency.EUR), 0.02);
 
 
-        Double result = convertionValue.get(new Pair<>(from, to)) * input;
+        double result = convertionValue.get(new Pair<>(from, to)) * input;
         JOptionPane.showMessageDialog(null, "El resultado de la conversión es: " + input + " " + from.getCode() + " = " + result + " " + to.getCode());
-
     }
 
 
