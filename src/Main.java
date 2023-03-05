@@ -1,18 +1,21 @@
 import javafx.util.Pair;
 
 import javax.swing.*;
+import java.awt.*;
 import java.util.HashMap;
 
 class ChallengeConversor {
     public static void main(String[] args) {
-        //String input = JOptionPane.showInputDialog("hola");
-        //JOptionPane.showInputDialog(input);
-        //(Component parentComponent, Object message,
-        // String title, int messageType, Icon icon, Object[] selectionValues, Object initialSelectionValue)
+        //para poder compilar catcheo la excepcion y la reemplazo por un runtime que no exige ser catcheado, para compilar
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         Object[] units = new Object[]{"Moneda", "Velocidad"}; //creo un objeto con opciones
         Object option = JOptionPane.showInputDialog(null, "Elija la unidad a convertir", "Conversor de unidades",
                 JOptionPane.QUESTION_MESSAGE, null, units, null); //armo la ventana con esas
-                // opciones
+        // opciones
         switch (option.toString()) { //si matchea la string con alguna funcion la ejecuta
             case "Moneda":
                 convertCurrency(); //si matchea Moneda va a la funcion de convertir
@@ -24,12 +27,13 @@ class ChallengeConversor {
                 break;
         }
     }
+
     //funcion que convierte las unidades de velocidad, debo agregar panel tambien para la seleccion
     private static void convertSpeed() {
     }
 
     private static void convertCurrency() {
-        //creo un objeto que tenga los nombres de cada moneda, con la intencion de luego elegida una, pueda hacer las
+        //creo un objeto que tenga los nombres de cada moneda, con la intencion de que luego de elegida una, pueda hacer las
         //conversiones a cada moneda respectiva. gracias al hashmap y al switch
         Currency[] currencies = new Currency[]{
                 Currency.USD,
@@ -44,7 +48,18 @@ class ChallengeConversor {
                 "Conversor de unidades",
                 JOptionPane.QUESTION_MESSAGE, null, currencies, null);
 
-        Double input = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el valor a convertir"));
+        Double input = null;
+        while (input == null) {
+            try {
+                input = Double.parseDouble(JOptionPane.showInputDialog("Ingrese el valor a convertir"));
+                if (input <= 0) {
+                    throw new NumberFormatException();
+                }
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "Ingrese un número mayor a 0", "Conversor de unidades", JOptionPane.WARNING_MESSAGE);
+                input = null;
+            }
+        }
 
         Currency to = (Currency) JOptionPane.showInputDialog(null, "Elija la moneda a la cual convertir",
                 "Conversor de unidades",
@@ -64,7 +79,7 @@ class ChallengeConversor {
 
 
         Double result = convertionValue.get(new Pair<>(from, to)) * input;
-        JOptionPane.showMessageDialog(null, "El resultado de la conversión es: " + result + " " + to.getCode());
+        JOptionPane.showMessageDialog(null, "El resultado de la conversión es: " + input + " " + from.getCode() + " = " + result + " " + to.getCode());
 
     }
 
