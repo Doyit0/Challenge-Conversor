@@ -1,3 +1,6 @@
+import javafx.util.Pair;
+
+import java.util.HashMap;
 
 //hice la clase currency para darle atributos a cada moneda, como nombre, codigo, etc
 public class Currency {
@@ -16,8 +19,26 @@ public class Currency {
         this.name = name;
     }
 
+
     @Override
     public String toString() {
         return name;
+    }
+    public static class Converter{
+        private final HashMap<Pair<Currency, Currency>, Double> conversionValue = new HashMap<>();
+
+        public Converter() {
+            conversionValue.put(new Pair<>(Currency.ARS, Currency.USD), 0.02);
+            conversionValue.put(new Pair<>(Currency.ARS, Currency.EUR), 0.02);
+            conversionValue.put(new Pair<>(Currency.ARS, Currency.YEN), 0.02);
+            conversionValue.put(new Pair<>(Currency.ARS, Currency.UYU), 0.02);
+            conversionValue.put(new Pair<>(Currency.USD, Currency.ARS), 2.0);
+            conversionValue.put(new Pair<>(Currency.EUR, Currency.USD), 0.02);
+            conversionValue.put(new Pair<>(Currency.USD, Currency.EUR), 0.02);
+        }
+
+        public double convert(Currency from, Currency to, double input){
+            return conversionValue.get(new Pair<>(from, to)) * input;
+        }
     }
 }
