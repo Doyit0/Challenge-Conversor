@@ -117,7 +117,5 @@ class ChallengeConversor {
         //double result = convertionValue.get(new Pair<>(from, to)) * input;
         JOptionPane.showMessageDialog(null, "El resultado de la conversión es: " + input + " " + from.getCode() + " = " + result + " " + to.getCode());
     }
-
-
 }
 

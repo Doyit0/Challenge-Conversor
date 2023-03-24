@@ -6,14 +6,16 @@ import java.util.HashMap;
 public class Currency {
     private String code;
     private String name;
-    public static final Currency USD =  new Currency("USD","Dólar Estadounidense");
-    public static final Currency ARS =  new Currency("ARS","Pesos Argentinos");
-    public static final Currency EUR =  new Currency("EUR","Euro");
-    public static final Currency UYU =  new Currency("UYU","Peso Uruguayo");
-    public static final Currency YEN =  new Currency("YEN","Yen Japonés");
+    public static final Currency USD = new Currency("USD", "Dólar Estadounidense");
+    public static final Currency ARS = new Currency("ARS", "Pesos Argentinos");
+    public static final Currency EUR = new Currency("EUR", "Euro");
+    public static final Currency UYU = new Currency("UYU", "Peso Uruguayo");
+    public static final Currency YEN = new Currency("YEN", "Yen Japonés");
+
     public String getCode() {
         return code;
     }
+
     public Currency(String code, String name) {
         this.code = code;
         this.name = name;
@@ -24,7 +26,8 @@ public class Currency {
     public String toString() {
         return name;
     }
-    public static class Converter{
+
+    public static class Converter {
         private final HashMap<Pair<Currency, Currency>, Double> conversionValue = new HashMap<>();
 
         public Converter() {
@@ -37,7 +40,7 @@ public class Currency {
             conversionValue.put(new Pair<>(Currency.USD, Currency.EUR), 0.02);
         }
 
-        public double convert(Currency from, Currency to, double input){
+        public double convert(Currency from, Currency to, double input) {
             return conversionValue.get(new Pair<>(from, to)) * input;
         }
     }
