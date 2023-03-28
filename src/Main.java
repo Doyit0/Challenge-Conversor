@@ -1,5 +1,6 @@
 
 import javax.swing.*;
+import java.io.IOException;
 
 class ChallengeConversor {
     public static void main(String[] args) {
@@ -64,32 +65,25 @@ class ChallengeConversor {
                 JOptionPane.QUESTION_MESSAGE, null, velocities, null);
 
 
-        //Pair<String, String> arsUsd = new Pair<>("ARS","USD");
-        //aca veo que matchea con que y devuelvo el valor de tipo double con la tasa de conversion
-
-
         Velocity.Converter converter = new Velocity.Converter();
         double result = converter.convert(from, to, input);
-        //double result = convertionValue.get(new Pair<>(from, to)) * input;
-        JOptionPane.showMessageDialog(null, "El resultado de la conversión es: " + input + " " + from.getUnit() + " = " + result + " " + to.getUnit());
+        JOptionPane.showMessageDialog(null, "El resultado de la conversión es: " + String.format("%.2f", input) + " " + from.getUnit() + " = " + String.format("%.2f", result) + " " + to.getUnit());
 
     }
 
 
     private static void convertCurrency() {
-        //creo un objeto que tenga los nombres de cada moneda, con la intencion de que luego de elegida una, pueda hacer las
-        //conversiones a cada moneda respectiva. gracias al hashmap y al switch
-        Currency[] currencies = new Currency[]{
-                Currency.USD,
-                Currency.ARS,
-                Currency.EUR,
-                Currency.UYU,
-                Currency.YEN
-        };
+        Currency.Converter converter = null;
+        try {
+            converter = new Currency.OnlineConverter();
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "No se pudo obtener las conversiones online, se continuará utilizando los valores predeterminados");
+            converter = new Currency.OfflineConverter();
+        }
 
         Currency from = (Currency) JOptionPane.showInputDialog(null, "Elija la moneda de la cual convertir",
                 "Conversor de unidades",
-                JOptionPane.QUESTION_MESSAGE, null, currencies, null);
+                JOptionPane.QUESTION_MESSAGE, null, Currency.CURRENCIES, null);
         Double input = null;
         while (input == null) {
             try {
@@ -105,17 +99,10 @@ class ChallengeConversor {
 
         Currency to = (Currency) JOptionPane.showInputDialog(null, "Elija la moneda a la cual convertir",
                 "Conversor de unidades",
-                JOptionPane.QUESTION_MESSAGE, null, currencies, null);
+                JOptionPane.QUESTION_MESSAGE, null, Currency.CURRENCIES, null);
 
-
-        //Pair<String, String> arsUsd = new Pair<>("ARS","USD");
-        //aca veo que matchea con que y devuelvo el valor de tipo double con la tasa de conversion
-
-
-        Currency.Converter converter = new Currency.Converter();
         double result = converter.convert(from, to, input);
-        //double result = convertionValue.get(new Pair<>(from, to)) * input;
-        JOptionPane.showMessageDialog(null, "El resultado de la conversión es: " + input + " " + from.getCode() + " = " + result + " " + to.getCode());
+        JOptionPane.showMessageDialog(null, "El resultado de la conversión es: " + String.format("%.2f", input) + " " + from.getCode() + " = " + String.format("%.2f", result) + " " + to.getCode());
     }
 }
 

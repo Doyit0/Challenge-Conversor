@@ -13,7 +13,7 @@ public class Velocity {
     public static final Velocity YARDS_PER_MIN = new Velocity("yards/nin", "Yardas por minuto");
     public static final Velocity KNOTS = new Velocity("knots", "Nudos");
 
-    public Velocity(String unit, String name) {
+    private Velocity(String unit, String name) {
         this.unit = unit;
         this.name = name;
     }
